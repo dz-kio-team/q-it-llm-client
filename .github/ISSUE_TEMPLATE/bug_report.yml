@@ -1,0 +1,52 @@
+name: 🐞 Bug Report
+description: Q-IT 서비스의 버그나 오류를 보고합니다.
+title: "[Bug] "
+labels: [bug]
+assignees: []
+
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: 재현 단계
+      description: 버그를 재현하기 위한 구체적인 단계를 작성해주세요.
+      placeholder: |
+        1. 질문 생성 페이지로 이동
+        2. "AI로 생성" 클릭
+        3. 에러 팝업 확인
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 예상 결과
+      description: 정상 동작 시 기대되는 결과를 작성해주세요.
+      placeholder: ex) 질문이 정상적으로 생성되어 목록에 추가되어야 함
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 실제 결과
+      description: 버그 발생 시 실제로 나타나는 결과를 작성해주세요.
+      placeholder: ex) "서버 오류가 발생했습니다" 팝업이 표시됨
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: 환경 정보
+      description: 버그가 발생한 환경을 작성해주세요. (OS, 브라우저, 버전 등)
+      placeholder: ex) Chrome 128 / macOS 14.0 / Q-IT v0.9.1
+    validations:
+        required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 추가 정보
+      description: 기타 참고할 사항이나 관련 링크를 작성해주세요.
+      placeholder: 예) 관련 PR 링크, 스크린샷, 로그 등

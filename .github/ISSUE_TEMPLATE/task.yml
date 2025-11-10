@@ -1,0 +1,50 @@
+name: 🧩 Task
+description: Q-IT 개발/운영 작업 등록
+title: "[Task] "
+labels: [task]
+assignees: []
+
+body:
+  - type: textarea
+    id: details
+    attributes:
+      label: 작업 내용
+      description: 작업의 상세한 내용을 작성해주세요.
+      placeholder: ex) Spring REST Docs를 적용하여 /api/questions/recommend 엔드포인트 문서화
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: 할 일 목록 (To-do List)
+      description: 진행해야 할 세부 작업을 체크박스 형태로 나열해주세요.
+      value: |
+        - [ ] 개발
+        - [ ] 테스트
+        - [ ] 문서화
+        - [ ] 리팩토링
+        - [ ] 배포
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 우선순위
+      description: 작업의 우선순위를 선택해주세요.
+      options:
+        - 🔥 High
+        - ⚡ Medium
+        - 🧊 Low
+
+  - type: input
+    id: due_date
+    attributes:
+      label: 마감일
+      placeholder: ex) 2025-10-25
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 💬 비고 (Notes)
+      description: 기타 참고할 사항을 작성해주세요.
+      placeholder: 예) 이번 주 내 배포 예정
