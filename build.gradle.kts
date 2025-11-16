@@ -1,18 +1,29 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.5.6"
+    id("org.springframework.boot") version "3.5.6" apply false
     id("io.spring.dependency-management") version "1.1.7"
+    id("java-library")
+    id("maven-publish")
 }
 
 group = "com.kio"
-version = "0.0.1-SNAPSHOT"
+//version = "0.0.1-SNAPSHOT"
 description = "q-it-llm-client"
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+}
+
+tasks.jar {
+    enabled = true
+    archiveClassifier.set("") // 중복 방지
+    archiveVersion.set("${project.version}")
+    archiveBaseName.set("q-it-llm-client")
 }
 
 configurations {
@@ -33,6 +44,7 @@ val springAiVersion = "1.0.0"
 
 dependencyManagement {
     imports {
+        mavenBom(SpringBootPlugin.BOM_COORDINATES)
         mavenBom("org.springframework.ai:spring-ai-bom:$springAiVersion")
     }
 }
@@ -78,4 +90,16 @@ allOpen {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            groupId = "${project.group}"
+            artifactId = "q-it-llm-client"
+//            version = "${project.version}"
+            from(components["java"])
+        }
+    }
 }
