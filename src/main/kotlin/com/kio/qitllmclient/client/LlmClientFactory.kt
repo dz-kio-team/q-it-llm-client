@@ -1,8 +1,7 @@
-package com.kio.qitllmclient.infrastructure.factory
+package com.kio.qitllmclient.client
 
-import com.kio.qitllmclient.common.enums.ModelType
-import com.kio.qitllmclient.infrastructure.LlmClient
-import com.kio.qitllmclient.infrastructure.ollama.OllamaClient
+import com.kio.qitllmclient.model.enums.ModelType
+import com.kio.qitllmclient.client.ollama.OllamaClient
 import org.springframework.stereotype.Component
 
 @Component

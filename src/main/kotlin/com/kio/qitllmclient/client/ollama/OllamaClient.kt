@@ -1,9 +1,9 @@
-package com.kio.qitllmclient.infrastructure.ollama
+package com.kio.qitllmclient.client.ollama
 
-import com.kio.qitllmclient.common.enums.LlmMessageType
-import com.kio.qitllmclient.infrastructure.LlmClient
-import com.kio.qitllmclient.infrastructure.dto.request.LlmRequest
-import com.kio.qitllmclient.infrastructure.dto.response.LlmResponse
+import com.kio.qitllmclient.model.enums.LlmMessageType
+import com.kio.qitllmclient.client.LlmClient
+import com.kio.qitllmclient.model.LlmRequest
+import com.kio.qitllmclient.model.LlmResponse
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.messages.AssistantMessage
 import org.springframework.ai.chat.messages.SystemMessage

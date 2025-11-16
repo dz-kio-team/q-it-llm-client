@@ -1,6 +1,6 @@
-package com.kio.qitllmclient.infrastructure.dto.response
+package com.kio.qitllmclient.model
 
-import com.kio.qitllmclient.common.enums.ModelType
+import com.kio.qitllmclient.model.enums.ModelType
 
 data class LlmResponse(
     val content: String,

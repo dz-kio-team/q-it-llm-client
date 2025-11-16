@@ -1,6 +1,6 @@
-package com.kio.qitllmclient.infrastructure.dto.request
+package com.kio.qitllmclient.model
 
-import com.kio.qitllmclient.common.enums.ModelType
+import com.kio.qitllmclient.model.enums.ModelType
 
 data class LlmRequest(
     val prompt: List<LlmMessage>,

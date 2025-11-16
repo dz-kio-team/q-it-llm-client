@@ -1,11 +1,11 @@
 package com.kio.qitllmclient.ollama
 
 import com.kio.qitllmclient.TestApplication
-import com.kio.qitllmclient.common.enums.LlmMessageType
-import com.kio.qitllmclient.common.enums.ModelType
-import com.kio.qitllmclient.infrastructure.dto.request.LlmMessage
-import com.kio.qitllmclient.infrastructure.dto.request.LlmRequest
-import com.kio.qitllmclient.infrastructure.factory.LlmClientFactory
+import com.kio.qitllmclient.model.enums.LlmMessageType
+import com.kio.qitllmclient.model.enums.ModelType
+import com.kio.qitllmclient.model.LlmMessage
+import com.kio.qitllmclient.model.LlmRequest
+import com.kio.qitllmclient.client.LlmClientFactory
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

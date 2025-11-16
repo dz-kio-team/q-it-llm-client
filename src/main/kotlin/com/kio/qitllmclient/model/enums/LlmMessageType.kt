@@ -1,4 +1,4 @@
-package com.kio.qitllmclient.common.enums
+package com.kio.qitllmclient.model.enums
 
 import com.fasterxml.jackson.annotation.JsonCreator
 
