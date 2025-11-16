@@ -1,4 +1,4 @@
-package com.kio.qitllmclient.llm.adapter.`in`.dto.response
+package com.kio.qitllmclient.infrastructure.dto.response
 
 import com.kio.qitllmclient.common.enums.ModelType
 

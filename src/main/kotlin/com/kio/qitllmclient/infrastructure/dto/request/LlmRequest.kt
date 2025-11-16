@@ -1,10 +1,10 @@
-package com.kio.qitllmclient.llm.adapter.`in`.dto.request
+package com.kio.qitllmclient.infrastructure.dto.request
 
 import com.kio.qitllmclient.common.enums.ModelType
 
 data class LlmRequest(
     val prompt: List<LlmMessage>,
-    val temperature: Double = 0.7,
-    val maxTokens: Int = 512,
+    val temperature: Double? = null,
+    val maxTokens: Int? = null,
     val model: ModelType = ModelType.OLLAMA
 )

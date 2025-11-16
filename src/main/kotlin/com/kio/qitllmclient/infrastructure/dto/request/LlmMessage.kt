@@ -1,4 +1,4 @@
-package com.kio.qitllmclient.llm.adapter.`in`.dto.request
+package com.kio.qitllmclient.infrastructure.dto.request
 
 import com.kio.qitllmclient.common.enums.LlmMessageType
 
