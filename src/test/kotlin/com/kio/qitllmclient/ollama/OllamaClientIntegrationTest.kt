@@ -9,18 +9,29 @@ import com.kio.qitllmclient.client.LlmClientFactory
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
+import java.net.URL
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @SpringBootTest(classes = [TestApplication::class])
-class OllamaClientTest {
+class OllamaClientIntegrationTest {
 
     @Autowired
     lateinit var llmClientFactory: LlmClientFactory
 
+    @Value("\${spring.ai.ollama.base-url:}")
+    lateinit var ollamaBaseUrl: String
+
     @Test
     fun `Ollama 서버로 간단한 질문을 보내고 응답을 받는다`() {
+        // 서버 실행 여부 확인
+        if (!isOllamaRunning()) {
+            println("⚠️ Ollama 서버가 실행 중이 아니므로 테스트를 스킵합니다.")
+            return
+        }
+
         // given
         val request = LlmRequest(
             prompt = listOf(
@@ -65,5 +76,13 @@ class OllamaClientTest {
         println("모델: ${response.model}")
         println("응답 내용: ${response.content}")
         println("응답 시간: ${response.latencyMs}ms")
+    }
+
+    private fun isOllamaRunning(): Boolean {
+        return try {
+            URL(ollamaBaseUrl).openConnection().getInputStream().use { true }
+        } catch (e: Exception) {
+            false
+        }
     }
 }
