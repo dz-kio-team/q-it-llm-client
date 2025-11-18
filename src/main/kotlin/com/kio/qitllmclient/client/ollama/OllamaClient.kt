@@ -16,16 +16,17 @@ import org.springframework.stereotype.Component
 class OllamaClient(
     private val chatModel: OllamaChatModel
 ): LlmClient {
-    override fun generate(request: LlmRequest): LlmResponse {
+    override fun <T> generate(request: LlmRequest, contentType: Class<T>): LlmResponse<T> {
         val startTime = System.currentTimeMillis()
         val prompt = buildPrompt(request)
         val content = ChatClient.create(chatModel)
             .prompt(prompt)
             .call()
-            .content()
+            .entity(contentType)
+            ?: throw IllegalStateException("LLM 응답이 null입니다. contentType: ${contentType.name}")
         val latencyMs = System.currentTimeMillis() - startTime
         return LlmResponse(
-            content = content.toString(),
+            content = content,
             model = request.model,
             latencyMs = latencyMs
         )

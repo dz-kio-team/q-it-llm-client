@@ -4,5 +4,5 @@ import com.kio.qitllmclient.model.LlmRequest
 import com.kio.qitllmclient.model.LlmResponse
 
 interface LlmClient {
-    fun generate(request: LlmRequest): LlmResponse
+    fun <T> generate(request: LlmRequest, contentType: Class<T>): LlmResponse<T>
 }
