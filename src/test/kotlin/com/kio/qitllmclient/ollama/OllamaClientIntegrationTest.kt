@@ -1,17 +1,19 @@
 package com.kio.qitllmclient.ollama
 
 import com.kio.qitllmclient.TestApplication
-import com.kio.qitllmclient.model.enums.LlmMessageType
-import com.kio.qitllmclient.model.enums.ModelType
+import com.kio.qitllmclient.client.LlmClientFactory
 import com.kio.qitllmclient.model.LlmMessage
 import com.kio.qitllmclient.model.LlmRequest
-import com.kio.qitllmclient.client.LlmClientFactory
+import com.kio.qitllmclient.model.enums.LlmMessageType
+import com.kio.qitllmclient.model.enums.ModelType
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import java.net.URL
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
@@ -24,8 +26,9 @@ class OllamaClientIntegrationTest {
     @Value("\${spring.ai.ollama.base-url:}")
     lateinit var ollamaBaseUrl: String
 
-    @Test
-    fun `Ollama 서버로 면접 질문을 생성하고 응답을 받는다`() {
+    @ParameterizedTest
+    @ValueSource(ints = [1, 3, 5])
+    fun `요청 질문 개수에 맞춰 Ollama 서버로 면접 질문을 생성하고 응답을 받는다`(questionCount: Int) {
         // 서버 실행 여부 확인
         if (!isOllamaRunning()) {
             println("⚠️ Ollama 서버가 실행 중이 아니므로 테스트를 스킵합니다.")
@@ -74,7 +77,7 @@ class OllamaClientIntegrationTest {
                 ),
                 LlmMessage(
                     type = LlmMessageType.USER,
-                    prompt = "3년차 백엔드 개발자에게 적합한 기술 면접 질문 5개를 생성해줘."
+                    prompt = "3년차 백엔드 개발자에게 적합한 기술 면접 질문 ${questionCount}개를 생성해줘."
                 )
             ),
             model = ModelType.OLLAMA
@@ -90,7 +93,7 @@ class OllamaClientIntegrationTest {
             { assertNotNull(response.content) },
             { assertNotNull(response.content.questions) },
             { assertTrue(response.content.questions.isNotEmpty()) },
-            { assertTrue(response.content.questions.size == 5) },
+            { assertEquals(response.content.questions.size, questionCount) },
             {
                 response.content.questions.forEach { question ->
                     assertNotNull(question.question)
