@@ -1,11 +1,11 @@
 package com.kio.qitllmclient.ollama
 
+import com.kio.qit.enums.LlmMessageType
+import com.kio.qit.enums.ModelType
 import com.kio.qitllmclient.TestApplication
 import com.kio.qitllmclient.client.LlmClientFactory
 import com.kio.qitllmclient.model.LlmMessage
 import com.kio.qitllmclient.model.LlmRequest
-import com.kio.qitllmclient.model.enums.LlmMessageType
-import com.kio.qitllmclient.model.enums.ModelType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
