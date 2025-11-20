@@ -18,3 +18,7 @@ spring:
         options:
           temperature: 0.7   # 창의성/무작위성 정도. 높을수록 다양성 증가(0.7 ~ 0.9 추천)
           max-tokens: 1024   # 응답에서 생성할 최대 토큰 수 (너무 크면 성능/속도 저하)
+  http:
+    client:
+      connect-timeout: 5s      # 연결 타임아웃: 5초
+      read-timeout: 120s       # 읽기 타임아웃: 120초 (LLM 응답은 시간이 오래 걸릴 수 있음)
