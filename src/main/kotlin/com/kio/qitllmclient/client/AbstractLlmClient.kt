@@ -1,5 +1,6 @@
 package com.kio.qitllmclient.client
 
+import com.kio.qit.enums.ModelType
 import com.kio.qit.exception.ErrorCode
 import com.kio.qitllmclient.exception.LlmException
 import com.kio.qitllmclient.model.LlmRequest
@@ -45,14 +46,16 @@ abstract class AbstractLlmClient : LlmClient {
      */
     override fun <T> generate(request: LlmRequest, contentType: Class<T>): LlmResponse<T> {
         val startTime = System.currentTimeMillis()
+        val model = request.model
 
         return try {
-            logger.info { "LLM 요청 시작 - 모델: ${request.model}" }
+            logger.info { "LLM 요청 시작 - 모델: $model" }
 
             val content = doGenerate(request, contentType)
                 ?: throw LlmException(
                     errorCode = ErrorCode.LLM_NULL_RESPONSE,
-                    message = "LLM 응답이 null입니다. contentType: ${contentType.name}"
+                    message = "LLM 응답이 null입니다. contentType: ${contentType.name}",
+                    modelType = model.type
                 )
 
             val latencyMs = System.currentTimeMillis() - startTime
@@ -60,20 +63,20 @@ abstract class AbstractLlmClient : LlmClient {
 
             LlmResponse(
                 content = content,
-                model = request.model,
+                model = model,
                 latencyMs = latencyMs
             )
         } catch (e: LlmException) {
             logger.error(e) { "LLM 예외 발생: ${e.message}" }
             throw e
         } catch (e: ResourceAccessException) {
-            handleResourceAccessException(e, startTime)
+            handleResourceAccessException(e, startTime, model)
         } catch (e: HttpClientErrorException) {
-            handleHttpClientError(e, startTime)
+            handleHttpClientError(e, startTime, model)
         } catch (e: HttpServerErrorException) {
-            handleHttpServerError(e, startTime)
+            handleHttpServerError(e, startTime, model)
         } catch (e: Exception) {
-            handleUnexpectedException(e, startTime)
+            handleUnexpectedException(e, startTime, model)
         }
     }
 
@@ -92,7 +95,7 @@ abstract class AbstractLlmClient : LlmClient {
     /**
      * 리소스 접근 예외 처리 (타임아웃, 연결 실패 등)
      */
-    private fun handleResourceAccessException(e: ResourceAccessException, startTime: Long): Nothing {
+    private fun handleResourceAccessException(e: ResourceAccessException, startTime: Long, model: ModelType): Nothing {
         val latencyMs = System.currentTimeMillis() - startTime
         val errorMessage = when (e.cause) {
             is SocketTimeoutException -> "LLM 서버 응답 타임아웃 (${latencyMs}ms 경과)"
@@ -103,46 +106,45 @@ abstract class AbstractLlmClient : LlmClient {
         throw LlmException(
             errorCode = ErrorCode.LLM_API_CALL_FAILED,
             message = errorMessage,
-            cause = e
+            modelType = model.type
         )
     }
 
     /**
      * HTTP 클라이언트 에러 처리 (4xx)
      */
-    private fun handleHttpClientError(e: HttpClientErrorException, startTime: Long): Nothing {
+    private fun handleHttpClientError(e: HttpClientErrorException, startTime: Long, model: ModelType): Nothing {
         val latencyMs = System.currentTimeMillis() - startTime
         logger.error(e) { "LLM API 클라이언트 오류 - 상태 코드: ${e.statusCode}, 소요시간: ${latencyMs}ms" }
         throw LlmException(
             errorCode = ErrorCode.LLM_API_CALL_FAILED,
             message = "LLM API 클라이언트 오류 (${e.statusCode}): ${e.message}",
-            cause = e
+            modelType = model.type
         )
     }
 
     /**
      * HTTP 서버 에러 처리 (5xx)
      */
-    private fun handleHttpServerError(e: HttpServerErrorException, startTime: Long): Nothing {
+    private fun handleHttpServerError(e: HttpServerErrorException, startTime: Long, model: ModelType): Nothing {
         val latencyMs = System.currentTimeMillis() - startTime
         logger.error(e) { "LLM API 서버 오류 - 상태 코드: ${e.statusCode}, 소요시간: ${latencyMs}ms" }
         throw LlmException(
             errorCode = ErrorCode.LLM_API_CALL_FAILED,
             message = "LLM API 서버 오류 (${e.statusCode}): ${e.message}",
-            cause = e
+            modelType = model.type
         )
     }
 
     /**
      * 예상치 못한 예외 처리
      */
-    private fun handleUnexpectedException(e: Exception, startTime: Long): Nothing {
+    private fun handleUnexpectedException(e: Exception, startTime: Long, model: ModelType): Nothing {
         val latencyMs = System.currentTimeMillis() - startTime
         logger.error(e) { "LLM 호출 중 예상치 못한 예외 발생 - 소요시간: ${latencyMs}ms" }
         throw LlmException(
             errorCode = ErrorCode.LLM_API_CALL_FAILED,
-            message = "LLM API 호출 중 오류가 발생했습니다: ${e.message}",
-            cause = e
+            modelType = model.type
         )
     }
 }
