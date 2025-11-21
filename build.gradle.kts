@@ -52,7 +52,7 @@ dependencyManagement {
 dependencies {
     // Q-IT Core Library
 //    implementation("com.github.dz-kio-team:q-it-core:main-SNAPSHOT")
-    implementation(files("build/libs/q-it-core-unspecified.jar"))
+    implementation(files("build/libs/q-it-core-test.jar"))
 
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter-actuator")
