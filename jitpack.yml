@@ -1,0 +1,13 @@
+# JitPack에서 프로젝트를 빌드하기 위한 설정 파일
+jdk:
+  - openjdk17
+
+before_install:
+  - sdk install java 17.0.8-tem
+  - sdk use java 17.0.8-tem
+  - sdk install gradle 8.4
+  - gradle -v
+
+install:
+  - ./gradlew build -x test  # 테스트 제외하고 빌드
+  - ./gradlew publishToMavenLocal
