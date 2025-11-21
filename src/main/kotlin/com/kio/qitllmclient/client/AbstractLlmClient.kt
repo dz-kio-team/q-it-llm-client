@@ -1,7 +1,7 @@
 package com.kio.qitllmclient.client
 
 import com.kio.qit.exception.ErrorCode
-import com.kio.qit.exception.LlmException
+import com.kio.qitllmclient.exception.LlmException
 import com.kio.qitllmclient.model.LlmRequest
 import com.kio.qitllmclient.model.LlmResponse
 import io.github.oshai.kotlinlogging.KLogger

@@ -2,8 +2,8 @@ package com.kio.qitllmclient.client
 
 import com.kio.qit.enums.ModelType
 import com.kio.qit.exception.ErrorCode
-import com.kio.qit.exception.LlmException
 import com.kio.qitllmclient.client.ollama.OllamaClient
+import com.kio.qitllmclient.exception.LlmException
 import org.springframework.stereotype.Component
 
 @Component
