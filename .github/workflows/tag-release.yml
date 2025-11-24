@@ -1,0 +1,38 @@
+name: github action tag release
+
+# main 브랜치에 push 이벤트가 발생할 때 워크플로가 실행됨
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release  # job 이름
+    runs-on: ubuntu-latest  # 최신 Ubuntu 환경(호스트 OS)에서 실행
+
+    # GITHUB_TOKEN 권한 설정
+    permissions:
+      packages: write  # GitHub Packages 접근 권한 (패키지 푸시 시 필요)
+      contents: write  # 리포지토리의 태그/릴리스 등 콘텐츠 수정 권한
+      id-token: write  # OpenID Connect 기반 인증 권한 (optional, 보안 목적)
+
+    steps:
+      # -----------------------------------------------
+      # Step 1: 새 버전 태그 생성 및 푸시
+      # -----------------------------------------------
+      - name: Bump version and push tag  # 단계 설명
+        id: tag_version                  # 결과를 참조하기 위한 고유 ID
+        uses: mathieudutour/github-tag-action@v6.1  # 버전 태그 자동 생성 액션
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # 리포지토리에 접근하기 위한 GitHub 토큰
+
+      # -----------------------------------------------
+      # Step 2: 새 GitHub Release 생성
+      # -----------------------------------------------
+      - name: Create a GitHub release  # 새로운 릴리스 생성 단계
+        uses: ncipollo/release-action@v1  # GitHub 릴리스 자동 생성 액션 사용
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}  # 방금 생성된 태그 이름
+          name: ${{ steps.tag_version.outputs.new_tag }} # 릴리스 이름 (태그와 일치)
+          body: ${{ steps.tag_version.outputs.changelog }} # 자동 생성 changelog 를 릴리스 본문으로 사용

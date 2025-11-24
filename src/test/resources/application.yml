@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: q-it-llm-client
+
+  mvc:
+    servlet:
+      path: /api/v1
+
+  ai:
+    ollama:
+      base-url: http://localhost:11434  # Ollama 서버가 실행 중인 주소 (기본 포트 11434)
+
+      init:
+        pull-model-strategy: never  # 모델이 없을 때 자동 다운로드(pull) 하지 않도록 설정  (never, always, if-not-exists)
+
+      chat:
+        model: llama3.1:8b  # 사용할 Ollama 모델 이름과 버전
+        options:
+          temperature: 0.7   # 창의성/무작위성 정도. 높을수록 다양성 증가(0.7 ~ 0.9 추천)
+          max-tokens: 1024   # 응답에서 생성할 최대 토큰 수 (너무 크면 성능/속도 저하)
