@@ -10,7 +10,6 @@ import org.springframework.ai.chat.messages.SystemMessage
 import org.springframework.ai.chat.messages.UserMessage
 import org.springframework.ai.chat.prompt.Prompt
 import org.springframework.ai.ollama.OllamaChatModel
-import org.springframework.stereotype.Component
 
 /**
  * Ollama LLM 클라이언트 구현체
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component
  * Spring AI의 OllamaChatModel을 사용하여 Ollama 서버와 통신합니다.
  * 예외 처리, 로깅, 레이턴시 측정은 AbstractLlmClient에서 자동으로 처리됩니다.
  */
-@Component
 class OllamaClient(
     private val chatModel: OllamaChatModel
 ) : AbstractLlmClient() {
