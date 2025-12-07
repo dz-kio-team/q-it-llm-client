@@ -1,7 +1,5 @@
 package com.kio.qitllmclient.config
 
-import com.kio.qitllmclient.client.LlmClientFactory
-import com.kio.qitllmclient.client.ollama.OllamaClient
 import com.kio.qitllmclient.exception.LlmExceptionHandler
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.context.annotation.Import
@@ -13,10 +11,8 @@ import org.springframework.context.annotation.Import
 @AutoConfiguration
 @Import(
     value = [
-        // 여기에 라이브러리의 스프링 빈 구성 요소들을 추가합니다.
         LlmExceptionHandler::class,
-        OllamaClient::class,
-        LlmClientFactory::class
+        OllamaClientConfig::class
     ]
 )
 class LlmSharedAutoConfig {
